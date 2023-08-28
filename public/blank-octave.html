@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Test </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <link rel="icon" href="https://fav.farm/👻">
+</head>
+
+<body class="container">
+  <section id="alto-3-4-f-sharp-minor-section">
+    this is some blank score in alto clef in A major in 3/4 time
+    <div id="alto-3-4-f-sharp-minor"></div>
+  </section>
+  <section id="amazing-grace-melody-8va-section">
+    this is the melody of amazing grace for instruments that musiccpr labels <code>Concert Pitch TC 8va</code> which are
+    <ul>
+      <li>Violin</li>
+      <li>Piccolo</li>
+      <li>Flute</li>
+    </ul>
+    <div id="amazing-grace-melody-8va"></div>
+  </section>
+  <section>
+    <p>Blank and baseURL</p>
+    <div id="blank-blank"></div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+  <!-- <script src="https://prod.flat-cdn.com/embed-js/v1.5.1/embed.min.js"></script> -->
+  <script src="embed.min.js"></script>
+  <script src="thick.js"></script>
+  <script>
+    const scores = [
+      {
+        id: "alto-3-4-f-sharp-minor",
+        "scoreId": "64ca6c34a752b673b9e765a3",
+        "sharingKey": "5a1f1631f2478a16e31be02fdb69c62f75881baf11eb8e0e28e3c748cdc21f45e970cc1996219fec9ae272c8416355dd9a79128c61b6d123be6702db0d15c673"
+      },
+      {
+        id: 'amazing-grace-melody-8va',
+        "scoreId": "64ca660de6985ecc31d8597b",
+        "sharingKey": "3550a7834997bafab5d5fd1e1d2c10aa9e087f40f44c31fc98a447a5a962a6b7e2bb109d02f133430c0f330e90cfcf5dc1cf376349bad68a704c14d4caaccff5"
+      }
+    ]
+    const createEmbed = (containerElemId, scoreId, sharingKey) => {
+      const blankContainer = document.getElementById(containerElemId);
+      const blankEmbed = new Flat.Embed(blankContainer, {
+        "width": "100%",
+        "height": "300",
+        "score": scoreId,
+        "embedParams": {
+          "mode": "edit",
+          "toolsetId": NEA_CREATE_TOOLSET_ID,
+          "branding": false,
+          "controlsPlay": false,
+          "appId": appId,
+          "sharingKey": sharingKey
+        },
+      });
+      return blankEmbed.ready().then(() => blankEmbed)
+      // return {embed: blankEmbed, ready: blankEmbed.ready()};
+    };
+
+    const blankBlankElem = document.getElementById('blank-blank')
+    const bbEmbed = new Flat.Embed(blankBlankElem, {
+      "width": "100%",
+      "height": "300",
+      "embedParams": {
+        "mode": "edit",
+        "toolsetId": NEA_CREATE_TOOLSET_ID,
+        "branding": false,
+        "controlsPlay": false,
+        "appId": appId,
+      },
+    });
+
+    const embeds = scores.map(({ id, scoreId, sharingKey }) => createEmbed(id, scoreId, sharingKey))
+    const scoreJSONs = Promise.all(embeds)
+      .then((es) => Promise.all(es.map((e)=>e.getJSON())))
+    scoreJSONs.then(console.log)
+
+    embeds[1].then(()=>{
+      console.log('iframe src', document.querySelector('#amazing-grace-melody-8va>iframe').src)
+      console.log('iframe document', document.querySelector('#amazing-grace-melody-8va>iframe').contentWindow.document)
+    })
+  </script>
+</body>
+
+</html>
