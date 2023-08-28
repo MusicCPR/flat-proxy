@@ -5,6 +5,8 @@ const port = 3000;
 
 const proxy = require("express-http-proxy");
 
+// wonder if this is right, seems like it is because my embed work 🤷‍♂️
+// https://github.com/villadora/express-http-proxy#proxyreqpathresolver-supports-promises
 app.use(
   "/proxy/:scoreId",
   proxy("flat-embed.com", {
